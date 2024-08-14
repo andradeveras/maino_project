@@ -1,0 +1,11 @@
+<h1>Bem-vindo ao SeuApp!</h1>
+<% if user_signed_in? %>
+  <p>Você está autenticado como <%= current_user.email %>.</p>
+<% else %>
+  <p>Você não está autenticado.</p>
+<% end %>
+
+
+
+
+
