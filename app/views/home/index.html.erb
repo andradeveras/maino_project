@@ -1,8 +1,8 @@
-<h1>Bem-vindo ao SeuApp!</h1>
+<h1>Bem-vindo a Mainô</h1>
 <% if user_signed_in? %>
-  <p>Você está autenticado como <%= current_user.email %>.</p>
+  <p>Você está autenticado, bem vindo, <%= current_user.user_name %>.</p>
 <% else %>
-  <p>Você não está autenticado.</p>
+  <p>Faça o login para ter acesso ao sistema.</p>
 <% end %>
 
 
