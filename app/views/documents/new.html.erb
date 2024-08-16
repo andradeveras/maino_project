@@ -1,0 +1,14 @@
+<h1>Enviar Novo Documento</h1>
+
+<%= form_for @document, url: documents_path, html: { multipart: true } do |f| %>
+  <div class="field">
+    <%= f.label :file, "Upload XML file" %>
+    <%= f.file_field :file %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Upload" %>
+  </div>
+<% end %>
+
+<%= link_to 'Voltar para a lista de documentos', documents_path, class: 'button' %>

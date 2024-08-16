@@ -1,11 +1,24 @@
 <h1>Bem-vindo a Mainô</h1>
+
 <% if user_signed_in? %>
-  <p>Você está autenticado, bem vindo, <%= current_user.user_name %>.</p>
+  <p>Você está autenticado, bem-vindo, <%= current_user.user_name %>.</p>
+  
+  <%= link_to 'Meus Documentos', documents_path, class: 'btn btn-primary' %>
+  <%= link_to 'Enviar Novo Documento', new_document_path, class: 'btn btn-secondary' %>
+
+  <h2>Seus Documentos:</h2>
+
+  <% if @documents.any? %>
+    <ul>
+      <% @documents.each do |document| %>
+        <li>
+          <%= link_to document.file&.original_filename, document.file&.url, target: "_blank" %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>Você ainda não enviou nenhum documento.</p>
+  <% end %>
 <% else %>
   <p>Faça o login para ter acesso ao sistema.</p>
 <% end %>
-
-
-
-
-

@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :documents
+  include DocumentUploader::Attachment(:document) 
   # Devise modules
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable

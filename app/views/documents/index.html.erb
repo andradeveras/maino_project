@@ -1,0 +1,16 @@
+<h1>Seus Documentos</h1>
+
+<%= link_to 'Adicionar Novo Documento', new_document_path %>
+
+<% if @documents.any? %>
+  <ul>
+    <% @documents.each do |document| %>
+      <li>
+        <!-- Exibe o nome original do arquivo e fornece um link para download -->
+        <%= link_to document.file&.original_filename, document.file&.url, target: "_blank" %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>Você ainda não fez o upload de nenhum documento.</p>
+<% end %>

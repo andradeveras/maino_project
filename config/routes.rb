@@ -3,12 +3,15 @@ Rails.application.routes.draw do
 
   root to: 'home#index'
 
-  get 'home/index'
-  get 'home/new'
-  get 'home/create'
-
+  # Recursos para usuários
   resources :users, only: [:index, :show, :edit, :update, :destroy]
 
-  # Health check route
-  get "up" => "rails/health#show", as: :rails_health_check
+  # Recursos para documentos
+  resources :documents, only: [:index, :new, :create]
+
+  # Rota de verificação de saúde
+  get 'up', to: 'rails/health#show', as: :rails_health_check
+
+  # Rota para a página inicial de documentos
+  get 'documents/home', to: 'documents#home', as: :documents_home
 end
