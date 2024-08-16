@@ -40,6 +40,11 @@ class DocumentsController < ApplicationController
 
   def index
     @documents = current_user.documents
+
+    if params[:search].present?
+      @documents = @documents.where("serie LIKE :search OR nNF LIKE :search OR dhEmi LIKE :search",
+                                    search: "%#{params[:search]}%")
+    end
   end
 
   private

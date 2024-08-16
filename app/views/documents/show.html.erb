@@ -2,6 +2,11 @@
 
 <h1>Detalhes do Documento</h1>
 
+<div>
+  <%= label_tag :search, "Pesquisar:" %>
+  <%= text_field_tag :search, nil, id: 'search-input' %>
+</div>
+
 <h2>Dados do Documento Fiscal</h2>
 <p><strong>Série:</strong> <%= @data[:serie] %></p>
 <p><strong>Número da Nota Fiscal:</strong> <%= @data[:nNF] %></p>
@@ -36,7 +41,7 @@
 </ul>
 
 <h2>Produtos</h2>
-<table>
+<table id="documents-table">
   <thead>
     <tr>
       <th>Nome</th>
@@ -74,3 +79,21 @@
 <h2>Totalizadores</h2>
 <p><strong>Total Produtos:</strong> <%= number_to_currency(@data[:totalizadores][:total_produtos]) %></p>
 <p><strong>Total Impostos:</strong> <%= number_to_currency(@data[:totalizadores][:total_impostos]) %></p>
+
+<!-- Adicione o script jQuery para filtragem -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+  $("#search-input").on("keyup", function() {
+    var searchTerm = $(this).val().toLowerCase();
+    $("#documents-table tbody tr").each(function() {
+      var rowText = $(this).text().toLowerCase();
+      if (rowText.indexOf(searchTerm) !== -1) {
+        $(this).show();
+      } else {
+        $(this).hide();
+      }
+    });
+  });
+});
+</script>
