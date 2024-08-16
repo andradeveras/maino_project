@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :show, :edit, :update, :destroy]
 
   # Recursos para documentos
-  resources :documents, only: [:index, :new, :create]
+  resources :documents, only: [:index, :new, :create, :show]
 
   # Rota de verificação de saúde
   get 'up', to: 'rails/health#show', as: :rails_health_check

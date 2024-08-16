@@ -8,6 +8,9 @@
       <li>
         <!-- Exibe o nome original do arquivo e fornece um link para download -->
         <%= link_to document.file&.original_filename, document.file&.url, target: "_blank" %>
+        
+        <!-- Link para a página de detalhes -->
+        <%= link_to 'Detalhes', document_path(document) %>
       </li>
     <% end %>
   </ul>

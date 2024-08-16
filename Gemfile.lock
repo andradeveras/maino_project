@@ -302,6 +302,7 @@ DEPENDENCIES
   image_processing (~> 1.2)
   importmap-rails
   jbuilder
+  nokogiri
   pg (~> 1.1)
   pry-byebug
   pry-rails

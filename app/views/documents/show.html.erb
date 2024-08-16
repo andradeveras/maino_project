@@ -1,0 +1,76 @@
+<!-- app/views/documents/show.html.erb -->
+
+<h1>Detalhes do Documento</h1>
+
+<h2>Dados do Documento Fiscal</h2>
+<p><strong>Série:</strong> <%= @data[:serie] %></p>
+<p><strong>Número da Nota Fiscal:</strong> <%= @data[:nNF] %></p>
+<p><strong>Data e Hora de Emissão:</strong> <%= @data[:dhEmi] %></p>
+
+<h2>Emitente</h2>
+<p><strong>CNPJ:</strong> <%= @data[:emit][:CNPJ] %></p>
+<p><strong>Nome:</strong> <%= @data[:emit][:xNome] %></p>
+<p><strong>Endereço:</strong></p>
+<ul>
+  <li><strong>Logradouro:</strong> <%= @data[:emit][:enderEmit][:xLgr] %></li>
+  <li><strong>Número:</strong> <%= @data[:emit][:enderEmit][:nro] %></li>
+  <li><strong>Bairro:</strong> <%= @data[:emit][:enderEmit][:xBairro] %></li>
+  <li><strong>Cidade:</strong> <%= @data[:emit][:enderEmit][:xMun] %></li>
+  <li><strong>Estado:</strong> <%= @data[:emit][:enderEmit][:UF] %></li>
+  <li><strong>CEP:</strong> <%= @data[:emit][:enderEmit][:CEP] %></li>
+  <li><strong>País:</strong> <%= @data[:emit][:enderEmit][:xPais] %></li>
+</ul>
+
+<h2>Destinatário</h2>
+<p><strong>CNPJ:</strong> <%= @data[:dest][:CNPJ] %></p>
+<p><strong>Nome:</strong> <%= @data[:dest][:xNome] %></p>
+<p><strong>Endereço:</strong></p>
+<ul>
+  <li><strong>Logradouro:</strong> <%= @data[:dest][:enderDest][:xLgr] %></li>
+  <li><strong>Número:</strong> <%= @data[:dest][:enderDest][:nro] %></li>
+  <li><strong>Bairro:</strong> <%= @data[:dest][:enderDest][:xBairro] %></li>
+  <li><strong>Cidade:</strong> <%= @data[:dest][:enderDest][:xMun] %></li>
+  <li><strong>Estado:</strong> <%= @data[:dest][:enderDest][:UF] %></li>
+  <li><strong>CEP:</strong> <%= @data[:dest][:enderDest][:CEP] %></li>
+  <li><strong>País:</strong> <%= @data[:dest][:enderDest][:xPais] %></li>
+</ul>
+
+<h2>Produtos</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>NCM</th>
+      <th>CFOP</th>
+      <th>Unidade</th>
+      <th>Quantidade</th>
+      <th>Valor Unitário</th>
+      <th>Valor Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @data[:produtos].each do |produto| %>
+      <tr>
+        <td><%= produto[:xProd] %></td>
+        <td><%= produto[:NCM] %></td>
+        <td><%= produto[:CFOP] %></td>
+        <td><%= produto[:uCom] %></td>
+        <td><%= produto[:qCom] %></td>
+        <td><%= number_to_currency(produto[:vUnCom]) %></td>
+        <td><%= number_to_currency(produto[:vProd]) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>Impostos</h2>
+<p><strong>ICMS:</strong> <%= number_to_currency(@data[:impostos][:ICMS][:vICMS]) %></p>
+<p><strong>Base de Cálculo ICMS:</strong> <%= number_to_currency(@data[:impostos][:ICMS][:baseCalculo]) %></p>
+<p><strong>Alíquota ICMS:</strong> <%= @data[:impostos][:ICMS][:aliquota] %> %</p>
+<p><strong>IPI:</strong> <%= number_to_currency(@data[:impostos][:IPI][:vIPI]) %></p>
+<p><strong>PIS:</strong> <%= number_to_currency(@data[:impostos][:PIS][:vPIS]) %></p>
+<p><strong>COFINS:</strong> <%= number_to_currency(@data[:impostos][:COFINS][:vCOFINS]) %></p>
+
+<h2>Totalizadores</h2>
+<p><strong>Total Produtos:</strong> <%= number_to_currency(@data[:totalizadores][:total_produtos]) %></p>
+<p><strong>Total Impostos:</strong> <%= number_to_currency(@data[:totalizadores][:total_impostos]) %></p>
