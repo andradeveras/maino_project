@@ -10,6 +10,10 @@ class DocumentsController < ApplicationController
     @document.user = current_user
   
     if @document.save
+
+      # Enfileira o job para processamento em background
+      ProcessXmlJob.perform_later(@document.id)
+      
       flash[:notice] = "Documento salvo com sucesso."
       redirect_to documents_path
     else

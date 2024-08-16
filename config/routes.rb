@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   root to: 'home#index'
 
+  
+
   # Recursos para usuários
   resources :users, only: [:index, :show, :edit, :update, :destroy]
 
