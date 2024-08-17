@@ -52,6 +52,8 @@ gem 'devise'
 gem 'shrine', '~> 3.0'
 gem 'image_processing', '~> 1.2'
 gem 'sidekiq'
+gem 'mini_mime'
+
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
