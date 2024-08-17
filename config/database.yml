@@ -79,9 +79,6 @@ test:
 #
 production:
   <<: *default
-  database: maino_project_production
-  username: laveras
-  password: <%= ENV["MAINO_PROJECT_DATABASE_PASSWORD"] %>
-  host: <%= ENV["DATABASE_HOST"] %>
-  port: <%= ENV["DATABASE_PORT"] %> # Adicione isso se estiver usando uma porta diferente de 5432
+    url: <%= ENV["DATABASE_URL"] %>
+
 
