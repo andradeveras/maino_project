@@ -1,7 +1,8 @@
 class DocumentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_document, only: %i[show]
+  before_action :set_document, only: %i[show download_excel]
   require 'nokogiri'
+
 
   def new
     @document = Document.new
@@ -25,16 +26,12 @@ class DocumentsController < ApplicationController
 
   def show
     @document = Document.find(params[:id])
-    
+
     if @document.file
       xml_content = @document.file.download
-      Rails.logger.debug("Conteúdo do XML: #{xml_content}")
-  
       @data = parse_xml(xml_content)
-      Rails.logger.debug("Dados extraídos: #{@data.inspect}")
     else
       @data = {}
-      Rails.logger.debug("Arquivo não encontrado para o documento ID: #{params[:id]}")
     end
   end
 
@@ -45,8 +42,14 @@ class DocumentsController < ApplicationController
       @documents = @documents.where("serie LIKE :search OR nNF LIKE :search OR dhEmi LIKE :search",
                                     search: "%#{params[:search]}%")
     end
-  end
+  end  
 
+  def download_excel
+    excel_content = ExcelReportService.new(@document).generate
+
+    send_data excel_content, filename: "relatorio_documento_#{Time.now.to_i}.xlsx", type: "application/xlsx"
+  end
+  
   private
 
   def set_document
@@ -129,39 +132,5 @@ class DocumentsController < ApplicationController
         ].sum
       }
     }
-  end
-  def generate_report(document_id, data)
-    # Código para gerar e salvar o relatório
-    report_content = <<-REPORT
-      Relatório para o Documento ID: #{document_id}
-      
-      Dados do Documento Fiscal:
-      Série: #{data[:serie]}
-      Número da Nota Fiscal: #{data[:nNF]}
-      Data e Hora de Emissão: #{data[:dhEmi]}
-      Emitente: #{data[:emit][:xNome]} (CNPJ: #{data[:emit][:CNPJ]})
-      Endereço do Emitente: #{data[:emit][:enderEmit][:xLgr]}, #{data[:emit][:enderEmit][:nro]}, #{data[:emit][:enderEmit][:xBairro]}, #{data[:emit][:enderEmit][:xMun]} - #{data[:emit][:enderEmit][:UF]}, CEP: #{data[:emit][:enderEmit][:CEP]}, País: #{data[:emit][:enderEmit][:xPais]}
-      
-      Destinatário: #{data[:dest][:xNome]} (CNPJ: #{data[:dest][:CNPJ]})
-      Endereço do Destinatário: #{data[:dest][:enderDest][:xLgr]}, #{data[:dest][:enderDest][:nro]}, #{data[:dest][:enderDest][:xBairro]}, #{data[:dest][:enderDest][:xMun]} - #{data[:dest][:enderDest][:UF]}, CEP: #{data[:dest][:enderDest][:CEP]}, País: #{data[:dest][:enderDest][:xPais]}
-      
-      Produtos Listados:
-      #{data[:produtos].map do |prod|
-        "Nome: #{prod[:xProd]}, NCM: #{prod[:NCM]}, CFOP: #{prod[:CFOP]}, Unidade: #{prod[:uCom]}, Quantidade: #{prod[:qCom]}, Valor Unitário: #{prod[:vUnCom]}, Valor Total: #{prod[:vProd]}"
-      end.join("\n")}
-      
-      Impostos Associados:
-      ICMS: #{data[:impostos][:ICMS][:vICMS]}
-      Base de Cálculo ICMS: #{data[:impostos][:ICMS][:baseCalculo]}
-      Alíquota ICMS: #{data[:impostos][:ICMS][:aliquota]}
-      IPI: #{data[:impostos][:IPI][:vIPI]}
-      PIS: #{data[:impostos][:PIS][:vPIS]}
-      COFINS: #{data[:impostos][:COFINS][:vCOFINS]}
-      
-      Total dos Produtos: #{data[:totalizadores][:total_produtos]}
-      Total dos Impostos: #{data[:totalizadores][:total_impostos]}
-    REPORT
-
-    File.write(Rails.root.join('public', "relatorio_#{document_id}.txt"), report_content)
   end
 end

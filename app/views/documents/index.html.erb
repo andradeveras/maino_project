@@ -11,6 +11,11 @@
         
         <!-- Link para a página de detalhes -->
         <%= link_to 'Detalhes', document_path(document) %>
+
+        <!-- Link para download excel -->
+<!-- Link para download excel -->
+<%= link_to 'Download Relatório', download_excel_document_path(document), class: 'btn btn-primary' %>
+
       </li>
     <% end %>
   </ul>

@@ -3,14 +3,16 @@ Rails.application.routes.draw do
 
   root to: 'home#index'
 
-  
-
   # Recursos para usuários
   resources :users, only: [:index, :show, :edit, :update, :destroy]
 
   # Recursos para documentos
-  resources :documents, only: [:index, :new, :create, :show]
-
+  resources :documents, only: [:index, :new, :create, :show] do
+    member do
+      get 'download_excel'
+    end
+  end
+  
   # Rota de verificação de saúde
   get 'up', to: 'rails/health#show', as: :rails_health_check
 
