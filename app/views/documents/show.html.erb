@@ -1,10 +1,21 @@
 <!-- app/views/documents/show.html.erb -->
 
-<h1>Detalhes do Documento</h1>
+<!-- Incluindo Bootstrap para estilos -->
+<%= stylesheet_link_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css', media: 'all', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'https://code.jquery.com/jquery-3.5.1.slim.min.js', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js', 'data-turbolinks-track': 'reload' %>
 
-<div>
-  <%= label_tag :search, "Pesquisar:" %>
-  <%= text_field_tag :search, nil, id: 'search-input' %>
+<h1 class="my-4">Detalhes do Documento</h1>
+
+<!-- Botão de Voltar à Home -->
+  <div class="mb-3">
+    <%= link_to 'Voltar à Home', root_path, class: 'btn btn-info' %>
+  </div>
+
+<div class="mb-4">
+  <%= label_tag :search, "Pesquisar:", class: 'form-label' %>
+  <%= text_field_tag :search, nil, id: 'search-input', class: 'form-control' %>
 </div>
 
 <h2>Dados do Documento Fiscal</h2>
@@ -16,7 +27,7 @@
 <p><strong>CNPJ:</strong> <%= @data[:emit][:CNPJ] %></p>
 <p><strong>Nome:</strong> <%= @data[:emit][:xNome] %></p>
 <p><strong>Endereço:</strong></p>
-<ul>
+<ul class="list-unstyled">
   <li><strong>Logradouro:</strong> <%= @data[:emit][:enderEmit][:xLgr] %></li>
   <li><strong>Número:</strong> <%= @data[:emit][:enderEmit][:nro] %></li>
   <li><strong>Bairro:</strong> <%= @data[:emit][:enderEmit][:xBairro] %></li>
@@ -30,7 +41,7 @@
 <p><strong>CNPJ:</strong> <%= @data[:dest][:CNPJ] %></p>
 <p><strong>Nome:</strong> <%= @data[:dest][:xNome] %></p>
 <p><strong>Endereço:</strong></p>
-<ul>
+<ul class="list-unstyled">
   <li><strong>Logradouro:</strong> <%= @data[:dest][:enderDest][:xLgr] %></li>
   <li><strong>Número:</strong> <%= @data[:dest][:enderDest][:nro] %></li>
   <li><strong>Bairro:</strong> <%= @data[:dest][:enderDest][:xBairro] %></li>
@@ -41,7 +52,7 @@
 </ul>
 
 <h2>Produtos</h2>
-<table id="documents-table">
+<table id="documents-table" class="table table-striped">
   <thead>
     <tr>
       <th>Nome</th>
@@ -80,21 +91,14 @@
 <p><strong>Total Produtos:</strong> <%= number_to_currency(@data[:totalizadores][:total_produtos]) %></p>
 <p><strong>Total Impostos:</strong> <%= number_to_currency(@data[:totalizadores][:total_impostos]) %></p>
 
-
-
 <!-- Adicione o script jQuery para filtragem -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
   $("#search-input").on("keyup", function() {
     var searchTerm = $(this).val().toLowerCase();
     $("#documents-table tbody tr").each(function() {
       var rowText = $(this).text().toLowerCase();
-      if (rowText.indexOf(searchTerm) !== -1) {
-        $(this).show();
-      } else {
-        $(this).hide();
-      }
+      $(this).toggle(rowText.indexOf(searchTerm) !== -1);
     });
   });
 });

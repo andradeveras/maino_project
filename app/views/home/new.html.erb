@@ -1,39 +1,49 @@
-<h1>Criar Novo Usuário</h1>
+<!-- Incluindo Bootstrap para estilos -->
+<%= stylesheet_link_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css', media: 'all', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'https://code.jquery.com/jquery-3.5.1.slim.min.js', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js', 'data-turbolinks-track': 'reload' %>
 
-<%= form_with(model: @user, url: home_create_path, local: true) do |form| %>
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> proibiu este usuário de ser salvo:</h2>
+<div class="container mt-4">
+  <h1 class="mb-4">Criar Novo Usuário</h1>
 
-      <ul>
-        <% @user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+  <%= form_with(model: @user, url: home_create_path, local: true, class: 'needs-validation', novalidate: true) do |form| %>
+    <% if @user.errors.any? %>
+      <div class="alert alert-danger">
+        <h4 class="alert-heading">Ocorreu um erro!</h4>
+        <ul class="mb-0">
+          <% @user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= form.label :email, class: 'form-label' %>
+      <%= form.email_field :email, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :password, class: 'form-label' %>
+      <%= form.password_field :password, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :password_confirmation, class: 'form-label' %>
+      <%= form.password_field :password_confirmation, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :admin, class: 'form-label' %>
+      <%= form.check_box :admin, class: 'form-check-input' %>
+      <%= form.label :admin, 'Admin?', class: 'form-check-label' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.submit 'Criar Usuário', class: 'btn btn-primary' %>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :email %>
-    <%= form.email_field :email %>
-  </div>
-
-  <div class="field">
-    <%= form.label :password %>
-    <%= form.password_field :password %>
-  </div>
-
-  <div class="field">
-    <%= form.label :password_confirmation %>
-    <%= form.password_field :password_confirmation %>
-  </div>
-
-  <div class="field">
-    <%= form.label :admin %>
-    <%= form.check_box :admin %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit 'Criar Usuário' %>
-  </div>
-<% end %>
+  <%= link_to 'Voltar', root_path, class: 'btn btn-secondary mt-3' %>
+</div>

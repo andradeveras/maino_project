@@ -1,14 +1,22 @@
-<h1>Enviar Novo Documento</h1>
+<!-- Incluindo Bootstrap para estilos -->
+<%= stylesheet_link_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css', media: 'all', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'https://code.jquery.com/jquery-3.5.1.slim.min.js', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js', 'data-turbolinks-track': 'reload' %>
 
-<%= form_for @document, url: documents_path, html: { multipart: true } do |f| %>
-  <div class="field">
-    <%= f.label :file, "Upload XML file" %>
-    <%= f.file_field :file %>
-  </div>
+<div class="container mt-4">
+  <h1 class="mb-4">Enviar Novo Documento</h1>
 
-  <div class="actions">
-    <%= f.submit "Upload" %>
-  </div>
-<% end %>
+  <%= form_for @document, url: documents_path, html: { multipart: true }, class: 'needs-validation', novalidate: true do |f| %>
+    <div class="form-group">
+      <%= f.label :file, "Upload XML File", class: 'form-label' %>
+      <%= f.file_field :file, class: 'form-control' %>
+    </div>
 
-<%= link_to 'Voltar para a lista de documentos', documents_path, class: 'button' %>
+    <div class="form-group">
+      <%= f.submit "Upload", class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+
+  <%= link_to 'Voltar para a lista de documentos', documents_path, class: 'btn btn-secondary' %>
+</div>

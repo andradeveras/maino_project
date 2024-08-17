@@ -1,24 +1,52 @@
-<h1>Seus Documentos</h1>
+<!-- Incluindo Bootstrap para estilos -->
+<%= stylesheet_link_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css', media: 'all', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'https://code.jquery.com/jquery-3.5.1.slim.min.js', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js', 'data-turbolinks-track': 'reload' %>
 
-<%= link_to 'Adicionar Novo Documento', new_document_path %>
+<div class="container mt-4">
+  <!-- Botão de Voltar à Home -->
+  <div class="mb-3">
+    <%= link_to 'Voltar à Home', root_path, class: 'btn btn-info' %>
+  </div>
 
-<% if @documents.any? %>
-  <ul>
-    <% @documents.each do |document| %>
-      <li>
-        <!-- Exibe o nome original do arquivo e fornece um link para download -->
-        <%= link_to document.file&.original_filename, document.file&.url, target: "_blank" %>
-        
-        <!-- Link para a página de detalhes -->
-        <%= link_to 'Detalhes', document_path(document) %>
+  <h1 class="mb-4">Seus Documentos</h1>
 
-        <!-- Link para download excel -->
-<!-- Link para download excel -->
-<%= link_to 'Download Relatório', download_excel_document_path(document), class: 'btn btn-primary' %>
+  <div class="mb-3">
+    <%= link_to 'Adicionar Novo Documento', new_document_path, class: 'btn btn-success' %>
+  </div>
 
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>Você ainda não fez o upload de nenhum documento.</p>
-<% end %>
+  <% if @documents.any? %>
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title">Lista de Documentos</h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Nome do Arquivo</th>
+                <th>Link para Detalhes</th>
+                <th>Download Relatório</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @documents.each do |document| %>
+                <tr>
+                  <td><%= link_to document.file&.original_filename, document.file&.url, target: "_blank" %></td>
+                  <td><%= link_to 'Detalhes', document_path(document), class: 'btn btn-info btn-sm' %></td>
+                  <td><%= link_to 'Download Relatório', download_excel_document_path(document), class: 'btn btn-primary btn-sm' %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="alert alert-warning mt-3" role="alert">
+      Você ainda não fez o upload de nenhum documento.
+    </div>
+  <% end %>
+</div>

@@ -1,24 +1,44 @@
-<h1>Bem-vindo a Mainô</h1>
+<!-- Incluindo Bootstrap para estilos -->
+<%= stylesheet_link_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css', media: 'all', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'https://code.jquery.com/jquery-3.5.1.slim.min.js', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js', 'data-turbolinks-track': 'reload' %>
 
-<% if user_signed_in? %>
-  <p>Você está autenticado, bem-vindo, <%= current_user.user_name %>.</p>
-  
-  <%= link_to 'Meus Documentos', documents_path, class: 'btn btn-primary' %>
-  <%= link_to 'Enviar Novo Documento', new_document_path, class: 'btn btn-secondary' %>
+<div class="container mt-4">
+  <h1 class="mb-4">Bem-vindo à Mainô</h1>
 
-  <h2>Seus Documentos:</h2>
+  <% if user_signed_in? %>
+    <div class="alert alert-success" role="alert">
+      Você está autenticado, bem-vindo, <strong><%= current_user.user_name %></strong>.
+    </div>
 
-  <% if @documents.any? %>
-    <ul>
-      <% @documents.each do |document| %>
-        <li>
-          <%= link_to document.file&.original_filename, document.file&.url, target: "_blank" %>
-        </li>
-      <% end %>
-    </ul>
+    <div class="mb-4">
+      <%= link_to 'Meus Documentos', documents_path, class: 'btn btn-primary mr-2' %>
+      <%= link_to 'Enviar Novo Documento', new_document_path, class: 'btn btn-secondary' %>
+    </div>
+
+    <h2 class="mt-4">Seus Documentos:</h2>
+
+    <% if @documents.any? %>
+      <div class="card">
+        <div class="card-body">
+          <ul class="list-group">
+            <% @documents.each do |document| %>
+              <li class="list-group-item">
+                <%= link_to document.file&.original_filename, document.file&.url, target: "_blank" %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% else %>
+      <div class="alert alert-info mt-3" role="alert">
+        Você ainda não enviou nenhum documento.
+      </div>
+    <% end %>
   <% else %>
-    <p>Você ainda não enviou nenhum documento.</p>
+    <div class="alert alert-warning" role="alert">
+      Faça o login para ter acesso ao sistema.
+    </div>
   <% end %>
-<% else %>
-  <p>Faça o login para ter acesso ao sistema.</p>
-<% end %>
+</div>
