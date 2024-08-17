@@ -1,104 +1,113 @@
-<!-- app/views/documents/show.html.erb -->
-
 <!-- Incluindo Bootstrap para estilos -->
 <%= stylesheet_link_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css', media: 'all', 'data-turbolinks-track': 'reload' %>
-<%= javascript_include_tag 'https://code.jquery.com/jquery-3.5.1.slim.min.js', 'data-turbolinks-track': 'reload' %>
-<%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'https://code.jquery.com/jquery-3.6.0.min.js', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js', 'data-turbolinks-track': 'reload' %>
 <%= javascript_include_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js', 'data-turbolinks-track': 'reload' %>
 
-<h1 class="my-4">Detalhes do Documento</h1>
+<div class="container my-4">
+  <h1>Detalhes do Documento</h1>
 
-<!-- Botão de Voltar à Home -->
+  <!-- Botão de Voltar à Home -->
   <div class="mb-3">
     <%= link_to 'Voltar à Home', root_path, class: 'btn btn-info' %>
   </div>
 
-<div class="mb-4">
-  <%= label_tag :search, "Pesquisar:", class: 'form-label' %>
-  <%= text_field_tag :search, nil, id: 'search-input', class: 'form-control' %>
+  <!-- Campo de Pesquisa -->
+  <div class="mb-4">
+    <%= label_tag :search_query, "Buscar por:", class: 'form-label' %>
+    <%= text_field_tag :search_query, nil, placeholder: 'Digite o texto para buscar', id: 'search-query', class: 'form-control' %>
+  </div>
+
+  <!-- Lista Única para Todos os Dados -->
+  <ul id="searchable-list" class="list-unstyled">
+    <!-- Dados do Documento Fiscal -->
+    <li class="data-item"><strong>Série:</strong> <%= @data[:serie] %></li>
+    <li class="data-item"><strong>Número da Nota Fiscal:</strong> <%= @data[:nNF] %></li>
+    <li class="data-item"><strong>Data e Hora de Emissão:</strong> <%= @data[:dhEmi] %></li>
+
+    <!-- Emitente -->
+    <li class="data-item"><strong>Emitente CNPJ:</strong> <%= @data[:emit][:CNPJ] %></li>
+    <li class="data-item"><strong>Emitente Nome:</strong> <%= @data[:emit][:xNome] %></li>
+    <li class="data-item"><strong>Emitente Logradouro:</strong> <%= @data[:emit][:enderEmit][:xLgr] %></li>
+    <li class="data-item"><strong>Emitente Número:</strong> <%= @data[:emit][:enderEmit][:nro] %></li>
+    <li class="data-item"><strong>Emitente Bairro:</strong> <%= @data[:emit][:enderEmit][:xBairro] %></li>
+    <li class="data-item"><strong>Emitente Cidade:</strong> <%= @data[:emit][:enderEmit][:xMun] %></li>
+    <li class="data-item"><strong>Emitente Estado:</strong> <%= @data[:emit][:enderEmit][:UF] %></li>
+    <li class="data-item"><strong>Emitente CEP:</strong> <%= @data[:emit][:enderEmit][:CEP] %></li>
+    <li class="data-item"><strong>Emitente País:</strong> <%= @data[:emit][:enderEmit][:xPais] %></li>
+
+    <!-- Destinatário -->
+    <li class="data-item"><strong>Destinatário CNPJ:</strong> <%= @data[:dest][:CNPJ] %></li>
+    <li class="data-item"><strong>Destinatário Nome:</strong> <%= @data[:dest][:xNome] %></li>
+    <li class="data-item"><strong>Destinatário Logradouro:</strong> <%= @data[:dest][:enderDest][:xLgr] %></li>
+    <li class="data-item"><strong>Destinatário Número:</strong> <%= @data[:dest][:enderDest][:nro] %></li>
+    <li class="data-item"><strong>Destinatário Bairro:</strong> <%= @data[:dest][:enderDest][:xBairro] %></li>
+    <li class="data-item"><strong>Destinatário Cidade:</strong> <%= @data[:dest][:enderDest][:xMun] %></li>
+    <li class="data-item"><strong>Destinatário Estado:</strong> <%= @data[:dest][:enderDest][:UF] %></li>
+    <li class="data-item"><strong>Destinatário CEP:</strong> <%= @data[:dest][:enderDest][:CEP] %></li>
+    <li class="data-item"><strong>Destinatário País:</strong> <%= @data[:dest][:enderDest][:xPais] %></li>
+
+    <!-- Produtos -->
+    <li class="data-item">
+      <h4>Produtos</h4>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Nome do Produto</th>
+            <th>NCM</th>
+            <th>CFOP</th>
+            <th>Unidade</th>
+            <th>Quantidade</th>
+            <th>Valor Unitário</th>
+            <th>Valor Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @data[:produtos].each do |produto| %>
+            <tr>
+              <td><%= produto[:xProd] %></td>
+              <td><%= produto[:NCM] %></td>
+              <td><%= produto[:CFOP] %></td>
+              <td><%= produto[:uCom] %></td>
+              <td><%= produto[:qCom] %></td>
+              <td><%= number_to_currency(produto[:vUnCom]) %></td>
+              <td><%= number_to_currency(produto[:vProd]) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </li>
+
+    <!-- Impostos -->
+    <li class="data-item"><strong>ICMS:</strong> <%= number_to_currency(@data[:impostos][:ICMS][:vICMS]) %></li>
+    <li class="data-item"><strong>Base de Cálculo ICMS:</strong> <%= number_to_currency(@data[:impostos][:ICMS][:baseCalculo]) %></li>
+    <li class="data-item"><strong>Alíquota ICMS:</strong> <%= @data[:impostos][:ICMS][:aliquota] %> %</li>
+    <li class="data-item"><strong>IPI:</strong> <%= number_to_currency(@data[:impostos][:IPI][:vIPI]) %></li>
+    <li class="data-item"><strong>PIS:</strong> <%= number_to_currency(@data[:impostos][:PIS][:vPIS]) %></li>
+    <li class="data-item"><strong>COFINS:</strong> <%= number_to_currency(@data[:impostos][:COFINS][:vCOFINS]) %></li>
+
+    <!-- Totalizadores -->
+    <li class="data-item"><strong>Total Produtos:</strong> <%= number_to_currency(@data[:totalizadores][:total_produtos]) %></li>
+    <li class="data-item"><strong>Total Impostos:</strong> <%= number_to_currency(@data[:totalizadores][:total_impostos]) %></li>
+  </ul>
 </div>
 
-<h2>Dados do Documento Fiscal</h2>
-<p><strong>Série:</strong> <%= @data[:serie] %></p>
-<p><strong>Número da Nota Fiscal:</strong> <%= @data[:nNF] %></p>
-<p><strong>Data e Hora de Emissão:</strong> <%= @data[:dhEmi] %></p>
-
-<h2>Emitente</h2>
-<p><strong>CNPJ:</strong> <%= @data[:emit][:CNPJ] %></p>
-<p><strong>Nome:</strong> <%= @data[:emit][:xNome] %></p>
-<p><strong>Endereço:</strong></p>
-<ul class="list-unstyled">
-  <li><strong>Logradouro:</strong> <%= @data[:emit][:enderEmit][:xLgr] %></li>
-  <li><strong>Número:</strong> <%= @data[:emit][:enderEmit][:nro] %></li>
-  <li><strong>Bairro:</strong> <%= @data[:emit][:enderEmit][:xBairro] %></li>
-  <li><strong>Cidade:</strong> <%= @data[:emit][:enderEmit][:xMun] %></li>
-  <li><strong>Estado:</strong> <%= @data[:emit][:enderEmit][:UF] %></li>
-  <li><strong>CEP:</strong> <%= @data[:emit][:enderEmit][:CEP] %></li>
-  <li><strong>País:</strong> <%= @data[:emit][:enderEmit][:xPais] %></li>
-</ul>
-
-<h2>Destinatário</h2>
-<p><strong>CNPJ:</strong> <%= @data[:dest][:CNPJ] %></p>
-<p><strong>Nome:</strong> <%= @data[:dest][:xNome] %></p>
-<p><strong>Endereço:</strong></p>
-<ul class="list-unstyled">
-  <li><strong>Logradouro:</strong> <%= @data[:dest][:enderDest][:xLgr] %></li>
-  <li><strong>Número:</strong> <%= @data[:dest][:enderDest][:nro] %></li>
-  <li><strong>Bairro:</strong> <%= @data[:dest][:enderDest][:xBairro] %></li>
-  <li><strong>Cidade:</strong> <%= @data[:dest][:enderDest][:xMun] %></li>
-  <li><strong>Estado:</strong> <%= @data[:dest][:enderDest][:UF] %></li>
-  <li><strong>CEP:</strong> <%= @data[:dest][:enderDest][:CEP] %></li>
-  <li><strong>País:</strong> <%= @data[:dest][:enderDest][:xPais] %></li>
-</ul>
-
-<h2>Produtos</h2>
-<table id="documents-table" class="table table-striped">
-  <thead>
-    <tr>
-      <th>Nome</th>
-      <th>NCM</th>
-      <th>CFOP</th>
-      <th>Unidade</th>
-      <th>Quantidade</th>
-      <th>Valor Unitário</th>
-      <th>Valor Total</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @data[:produtos].each do |produto| %>
-      <tr>
-        <td><%= produto[:xProd] %></td>
-        <td><%= produto[:NCM] %></td>
-        <td><%= produto[:CFOP] %></td>
-        <td><%= produto[:uCom] %></td>
-        <td><%= produto[:qCom] %></td>
-        <td><%= number_to_currency(produto[:vUnCom]) %></td>
-        <td><%= number_to_currency(produto[:vProd]) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<h2>Impostos</h2>
-<p><strong>ICMS:</strong> <%= number_to_currency(@data[:impostos][:ICMS][:vICMS]) %></p>
-<p><strong>Base de Cálculo ICMS:</strong> <%= number_to_currency(@data[:impostos][:ICMS][:baseCalculo]) %></p>
-<p><strong>Alíquota ICMS:</strong> <%= @data[:impostos][:ICMS][:aliquota] %> %</p>
-<p><strong>IPI:</strong> <%= number_to_currency(@data[:impostos][:IPI][:vIPI]) %></p>
-<p><strong>PIS:</strong> <%= number_to_currency(@data[:impostos][:PIS][:vPIS]) %></p>
-<p><strong>COFINS:</strong> <%= number_to_currency(@data[:impostos][:COFINS][:vCOFINS]) %></p>
-
-<h2>Totalizadores</h2>
-<p><strong>Total Produtos:</strong> <%= number_to_currency(@data[:totalizadores][:total_produtos]) %></p>
-<p><strong>Total Impostos:</strong> <%= number_to_currency(@data[:totalizadores][:total_impostos]) %></p>
-
-<!-- Adicione o script jQuery para filtragem -->
+<!-- Script para filtragem -->
 <script>
-$(document).ready(function() {
-  $("#search-input").on("keyup", function() {
-    var searchTerm = $(this).val().toLowerCase();
-    $("#documents-table tbody tr").each(function() {
-      var rowText = $(this).text().toLowerCase();
-      $(this).toggle(rowText.indexOf(searchTerm) !== -1);
+document.addEventListener("DOMContentLoaded", () => {
+  let inputElement = document.querySelector("#search-query");
+  let itemElements = document.querySelectorAll("#searchable-list .data-item");
+
+  inputElement.addEventListener("input", (e) => {
+    let inputted = e.target.value.toLowerCase();
+    
+    itemElements.forEach((li) => {
+      let text = li.textContent.toLowerCase();
+      if (text.includes(inputted)) {
+        li.style.display = "list-item";
+      } else {
+        li.style.display = "none";
+      }
     });
   });
 });
