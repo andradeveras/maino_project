@@ -9,7 +9,7 @@
 
   <% if user_signed_in? %>
     <div class="alert alert-success" role="alert">
-      Você está autenticado, bem-vindo, <strong><%= current_user.user_name %></strong>.
+      Você está autenticado, bem-vindo, <strong><%= current_user.email.split('@').first  %></strong>.
     </div>
 
     <div class="mb-4">
