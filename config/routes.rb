@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :show, :edit, :update, :destroy]
 
   # Recursos para documentos
-  resources :documents, only: [:index, :new, :create, :show] do
+  resources :documents, only: [:index, :new, :create, :show, :destroy] do
     member do
       get 'download_excel'
     end

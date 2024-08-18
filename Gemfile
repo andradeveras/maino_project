@@ -65,6 +65,8 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-byebug'
 
+  gem 'rspec-rails'
+
 end
 
 group :development do
@@ -82,4 +84,7 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver", '~> 4.11'
+  gem 'factory_bot_rails'
+  gem 'faker'
+  gem 'database_cleaner-active_record'
 end

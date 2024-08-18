@@ -1,6 +1,6 @@
 class DocumentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_document, only: %i[show download_excel]
+  before_action :set_document, only: %i[show download_excel destroy]
   require 'nokogiri'
 
 
@@ -42,7 +42,18 @@ class DocumentsController < ApplicationController
       @documents = @documents.where("serie LIKE :search OR nNF LIKE :search OR dhEmi LIKE :search",
                                     search: "%#{params[:search]}%")
     end
-  end  
+  end
+  
+  def destroy
+    if @document.user == current_user
+      @document.destroy
+      redirect_to documents_path, notice: 'Documento excluído com sucesso.'
+    else
+      redirect_to documents_path, alert: 'Você não tem permissão para excluir este documento.'
+    end
+  end
+
+
 
   def download_excel
     excel_content = ExcelReportService.new(@document).generate
