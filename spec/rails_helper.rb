@@ -2,6 +2,8 @@
 require 'spec_helper'
 require 'devise'
 require 'rails_helper'
+require 'support/shrine'
+
 
 
 ENV['RAILS_ENV'] ||= 'test'

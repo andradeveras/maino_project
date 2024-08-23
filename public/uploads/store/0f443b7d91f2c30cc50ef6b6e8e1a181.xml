@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <serie>123</serie>
+  <nNF>456</nNF>
+  <dhEmi>2024-08-18T12:00:00</dhEmi>
+  <emit>
+    <name>Empresa Teste</name>
+  </emit>
+  <dest>
+    <name>Cliente Teste</name>
+  </dest>
+  <prod>
+    <xProd>Produto Teste</xProd>
+    <NCM>12345678</NCM>
+    <CFOP>5102</CFOP>
+    <uCom>UN</uCom>
+    <qCom>10</qCom>
+    <vUnCom>50.0</vUnCom>
+  </prod>
+  <imposto>
+    <vICMS>5.0</vICMS>
+    <vIPI>2.0</vIPI>
+    <vPIS>1.0</vPIS>
+    <vCOFINS>1.5</vCOFINS>
+  </imposto>
+  <total>
+    <vProd>500.0</vProd>
+    <vICMS>5.0</vICMS>
+    <vIPI>2.0</vIPI>
+    <vPIS>1.0</vPIS>
+    <vCOFINS>1.5</vCOFINS>
+  </total>
+</document>
