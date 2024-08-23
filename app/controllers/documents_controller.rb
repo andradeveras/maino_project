@@ -71,6 +71,16 @@ class DocumentsController < ApplicationController
     params.require(:document).permit(:file)
   end
 
+  def document_attributes(document)
+    {
+      id: document.id,
+      serie: document.serie,
+      nNF: document.nNF,
+      dhEmi: document.dhEmi,
+      # Inclua outros atributos que deseja expor no JSON
+    }
+  end
+
   def parse_xml(xml_content)
     # Carregar o XML com o namespace
     doc = Nokogiri::XML(xml_content)

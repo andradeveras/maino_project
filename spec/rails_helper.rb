@@ -3,6 +3,7 @@ require 'spec_helper'
 require 'devise'
 require 'rails_helper'
 require 'support/shrine'
+require 'sidekiq/testing'
 
 
 
@@ -40,6 +41,11 @@ RSpec.configure do |config|
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
   ]
+
+  # Configura o adaptador de filas para o ambiente de teste
+  ActiveJob::Base.queue_adapter = :test
+  # Usando o fake para evitar que jobs sejam executados
+  Sidekiq::Testing.fake! 
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
